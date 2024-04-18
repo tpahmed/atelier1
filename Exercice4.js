@@ -33,6 +33,18 @@ class Post {
         const obj = JSON.parse(jsonString);
         return new Post(obj.title, obj.content, new User(obj.author, ""))
     }
+    displayPost() {
+        const postsContainer = document.getElementById('posts-container');
+    
+        const postElement = document.createElement('div');
+        postElement.classList.add('post');
+        postElement.innerHTML = `
+            <h4>${this.title}</h4>
+            <p>${this.description}</p>
+            <small>Posted by ${post.author} on ${this.datePosted}</small>
+        `;
+        postsContainer.appendChild(postElement);
+    }
 }
 
 const savePostsToLocalStorage = (posts) => {
@@ -100,33 +112,16 @@ document.getElementById('post-form').addEventListener('submit', function(event) 
     const title = document.getElementById('post-title').value;
     const description = document.getElementById('post-description').value;
 
-    const newPost = {
-        title: title,
-        description: description,
-        author: loggedInUser.username,
-        datePosted: new Date().toISOString() 
-    };
+    const newPost = new Post(title,description,loggedInUser);
 
     posts.push(newPost);
 
     document.getElementById('post-title').value = '';
     document.getElementById('post-description').value = '';
 
-    displayPost(newPost);
+    newPost.displayPost();
 
 
     alert('Your post has been added!');
 });
 
-function displayPost(post) {
-    const postsContainer = document.getElementById('posts-container');
-
-    const postElement = document.createElement('div');
-    postElement.classList.add('post');
-    postElement.innerHTML = `
-        <h4>${post.title}</h4>
-        <p>${post.description}</p>
-        <small>Posted by ${post.author} on ${post.datePosted}</small>
-    `;
-    postsContainer.appendChild(postElement);
-}
